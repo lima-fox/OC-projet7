@@ -1,0 +1,90 @@
+{
+  "openapi": "3.0.0",
+  "info": {
+    "title": "OC projet 7 API",
+    "version": "0.1.9"
+  },
+  "servers": [
+    {
+      "url": "http://projet7api.test"
+    }
+  ],
+  "paths": {
+    "/products": {
+      "get": {
+        "summary": "Returns a list of products.",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/Products"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/products/{id}": {
+      "get": {
+        "summary": "Get a product by Id.",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "schema": {
+              "type": "integer"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "A Products object.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Products"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "Products": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "example": 4
+          },
+          "brand": {
+            "type": "string",
+            "example": "Samsung"
+          },
+          "model": {
+            "type": "string",
+            "example": "S11"
+          },
+          "release_year": {
+            "type": "integer",
+            "example": 2021
+          },
+          "operating_system": {
+            "type": "string",
+            "example": "android"
+          }
+        }
+      }
+    }
+  }
+}
