@@ -1,0 +1,13 @@
+trikoder_oauth2:
+
+    authorization_server:
+        private_key: /home/vagrant/code/projet7api/private.key                     # Change this
+        private_key_passphrase: null                            # Passphrase of the private key, if any
+
+        encryption_key: '%env(string:OAUTH2_ENCRYPTION_KEY)%'   # (Optional) Change this
+
+    resource_server:
+        public_key: /home/vagrant/code/projet7api/public.key                       # Change this
+
+    persistence:
+        doctrine: null
