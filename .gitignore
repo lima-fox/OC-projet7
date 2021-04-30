@@ -7,4 +7,6 @@
 /public/bundles/
 /var/
 /vendor/
+/private.key
+/public.key
 ###< symfony/framework-bundle ###

@@ -37,6 +37,11 @@ class Users
      */
     private $deleted_at;
 
+    /**
+     * @ORM\Column(type="integer")
+     */
+    private $client_id;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -86,6 +91,18 @@ class Users
     public function setDeletedAt(?\DateTimeInterface $deleted_at): self
     {
         $this->deleted_at = $deleted_at;
+
+        return $this;
+    }
+
+    public function getClientId(): ?int
+    {
+        return $this->client_id;
+    }
+
+    public function setClientId(int $client_id): self
+    {
+        $this->client_id = $client_id;
 
         return $this;
     }
