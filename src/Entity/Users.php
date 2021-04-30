@@ -4,9 +4,11 @@ namespace App\Entity;
 
 use App\Repository\UsersRepository;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Entity(repositoryClass=UsersRepository::class)
+ *
  */
 class Users
 {
@@ -19,11 +21,17 @@ class Users
 
     /**
      * @ORM\Column(type="string", length=255)
+     *
+     * @Assert\NotBlank
+     * @Assert\Length(min=3)
      */
     private $name;
 
     /**
      * @ORM\Column(type="string", length=255)
+     *
+     * @Assert\NotBlank
+     * @Assert\Email()
      */
     private $email;
 
@@ -38,7 +46,7 @@ class Users
     private $deleted_at;
 
     /**
-     * @ORM\Column(type="integer")
+     * @ORM\Column(type="string", length=255)
      */
     private $client_id;
 
@@ -95,12 +103,12 @@ class Users
         return $this;
     }
 
-    public function getClientId(): ?int
+    public function getClientId(): ?string
     {
         return $this->client_id;
     }
 
-    public function setClientId(int $client_id): self
+    public function setClientId(string $client_id): self
     {
         $this->client_id = $client_id;
 

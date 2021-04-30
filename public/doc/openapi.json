@@ -115,7 +115,17 @@
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/Users"
+                "type": "object",
+                "properties": {
+                  "name": {
+                    "type": "string",
+                    "example": "John Doe"
+                  },
+                  "email": {
+                    "type": "string",
+                    "example": "john.doe@example.com"
+                  }
+                }
               }
             }
           }
@@ -129,6 +139,29 @@
                   "type": "array",
                   "items": {
                     "$ref": "#/components/schemas/Users"
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "bad request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "property_path": {
+                        "type": "string",
+                        "example": "email"
+                      },
+                      "message": {
+                        "type": "string",
+                        "example": "this email already exist"
+                      }
+                    }
                   }
                 }
               }
@@ -209,6 +242,10 @@
           "email": {
             "type": "string",
             "example": "john.doe@example.com"
+          },
+          "created_at": {
+            "type": "string",
+            "example": "2021-04-30 17:06:24"
           }
         }
       }

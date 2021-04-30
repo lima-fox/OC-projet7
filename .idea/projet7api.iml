@@ -96,6 +96,8 @@
       <excludeFolder url="file://$MODULE_DIR$/vendor/trikoder/oauth2-bundle" />
       <excludeFolder url="file://$MODULE_DIR$/vendor/ajgarlag/psr-http-message-bundle" />
       <excludeFolder url="file://$MODULE_DIR$/vendor/nyholm/psr7" />
+      <excludeFolder url="file://$MODULE_DIR$/vendor/symfony/validator" />
+      <excludeFolder url="file://$MODULE_DIR$/vendor/symfony/options-resolver" />
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
