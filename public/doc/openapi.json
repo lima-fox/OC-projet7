@@ -196,6 +196,33 @@
                 }
               }
             }
+          },
+          "404": {
+            "description": "user not found."
+          }
+        }
+      },
+      "delete": {
+        "summary": "Delete a user by Id.",
+        "tags": [
+          "Users"
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "schema": {
+              "type": "integer"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "delete a user by Id."
+          },
+          "404": {
+            "description": "User not found."
           }
         }
       }
@@ -249,6 +276,23 @@
           }
         }
       }
+    },
+    "securitySchemes": {
+      "oAuthNoScopes": {
+        "type": "oauth2",
+        "description": "This API uses OAuth 2 with the implicit grant flow.",
+        "flows": {
+          "clientCredentials": {
+            "tokenUrl": "http://projet7api.test/token",
+            "scopes": {}
+          }
+        }
+      }
     }
-  }
+  },
+  "security": [
+    {
+      "oAuthNoScopes": []
+    }
+  ]
 }

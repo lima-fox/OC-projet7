@@ -9,7 +9,7 @@ use App\Errors\CustomAssert;
 use App\Repository\UsersRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use FOS\RestBundle\Controller\AbstractFOSRestController;
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use FOS\RestBundle\Controller\Annotations\Delete;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -17,7 +17,6 @@ use FOS\RestBundle\Controller\Annotations\Get;
 use FOS\RestBundle\Controller\Annotations\Post;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use FOS\RestBundle\Controller\Annotations\View;
-use Symfony\Component\Validator\Validator\ValidatorInterface;
 use Symfony\Component\Validator\ConstraintViolationList;
 
 class UsersController extends AbstractFOSRestController
@@ -50,13 +49,13 @@ class UsersController extends AbstractFOSRestController
      *     statusCode = 200
      *     )
      */
-    public function One(UsersRepository $usersRepository, Request $request, int $id)
+    public function One(UsersRepository $usersRepository, int $id)
     {
         $user = $usersRepository->findBy(['id' => $id]);
 
         if ($user == null)
         {
-            return New Response(null, 404);
+            return New Response(null, Response::HTTP_NOT_FOUND);
         }
 
         return $user;
@@ -84,7 +83,7 @@ class UsersController extends AbstractFOSRestController
         }
 
         $errors = [];
-        if ($usersRepository->count(['email' => $users->getEmail(), 'client_id'=> 'client1']) > 0)
+        if ($usersRepository->count(['email' => $users->getEmail(), 'client_id'=> 'client']) > 0)
         {
             $errors[] = new CustomAssert('email', "This email already exist");
         }
@@ -97,12 +96,36 @@ class UsersController extends AbstractFOSRestController
         $created_at = new \DateTime('now');
 
         $users->setCreatedAt($created_at);
-        $users->setClientId('client1');
+        $users->setClientId('client');
 
         $entityManager->persist($users);
         $entityManager->flush();
 
         return $users;
+    }
+
+    /**
+    * @Delete(
+    *     path = "/users/{id}",
+    *     name = "delete_user"
+    * )
+    * @View(
+    *     statusCode = 204
+    *     )
+    */
+    public function Delete(EntityManagerInterface $entityManager, UsersRepository $usersRepository, int $id): Response
+    {
+        $user = $usersRepository->findOneBy(['id' => $id, 'client_id'=> 'client1']);
+
+        if ($user == null)
+        {
+            return New Response(null, Response::HTTP_NOT_FOUND);
+        }
+
+        $entityManager->remove($user);
+        $entityManager->flush();
+
+        return new Response(null, Response::HTTP_NO_CONTENT);
     }
 
 }
