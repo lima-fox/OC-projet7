@@ -9,7 +9,9 @@ use App\Errors\CustomAssert;
 use App\Repository\UsersRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use FOS\RestBundle\Controller\AbstractFOSRestController;
+use FOS\RestBundle\Controller\Annotations as Rest;
 use FOS\RestBundle\Controller\Annotations\Delete;
+use FOS\RestBundle\Controller\Annotations\Put;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -21,6 +23,7 @@ use Symfony\Component\Validator\ConstraintViolationList;
 
 class UsersController extends AbstractFOSRestController
 {
+
     /**
      * @Get(
      *     path = "/users",
@@ -32,6 +35,9 @@ class UsersController extends AbstractFOSRestController
      */
     public function All(UsersRepository $usersRepository, Request $request)
     {
+        $client = $this->getUser();
+        var_dump($client);
+
         $limit = 10;
         $offset = $request->query->get('offset', 0);
 
@@ -112,6 +118,7 @@ class UsersController extends AbstractFOSRestController
     * @View(
     *     statusCode = 204
     *     )
+    *
     */
     public function Delete(EntityManagerInterface $entityManager, UsersRepository $usersRepository, int $id): Response
     {
@@ -126,6 +133,38 @@ class UsersController extends AbstractFOSRestController
         $entityManager->flush();
 
         return new Response(null, Response::HTTP_NO_CONTENT);
+    }
+
+    /**
+     * @Put(
+     *     path = "/users/{id}",
+     *     name = "update_user"
+     * )
+     * @View(
+     *     statusCode = 200
+     *     )
+     * @ParamConverter("users", converter="fos_rest.request_body")
+     */
+    public function Update(EntityManagerInterface $entityManager, UsersRepository $usersRepository, int $id, Users $users) : Response
+    {
+        $user =$usersRepository->findOneBy(['id' => $id, 'client_id'=> 'client1']);
+
+        if ($user == null)
+        {
+            return New Response(null, Response::HTTP_NOT_FOUND);
+        }
+
+        $user->setName($users->getName());
+        $user->setEmail($users->getEmail());
+
+        $updated_at = new \DateTime('now');
+
+        $user->setUpdatedAt($updated_at);
+
+        $entityManager->persist($user);
+        $entityManager->flush();
+
+        return New Response(null, Response::HTTP_OK);
     }
 
 }

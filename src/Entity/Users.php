@@ -50,6 +50,11 @@ class Users
      */
     private $client_id;
 
+    /**
+     * @ORM\Column(type="datetime", nullable=true)
+     */
+    private $updated_at;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -111,6 +116,18 @@ class Users
     public function setClientId(string $client_id): self
     {
         $this->client_id = $client_id;
+
+        return $this;
+    }
+
+    public function getUpdatedAt(): ?\DateTimeInterface
+    {
+        return $this->updated_at;
+    }
+
+    public function setUpdatedAt(?\DateTimeInterface $updated_at): self
+    {
+        $this->updated_at = $updated_at;
 
         return $this;
     }

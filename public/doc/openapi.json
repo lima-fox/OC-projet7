@@ -225,6 +225,57 @@
             "description": "User not found."
           }
         }
+      },
+      "put": {
+        "summary": "Update a user by Id.",
+        "tags": [
+          "Users"
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "name": {
+                    "type": "string",
+                    "example": "John Doe"
+                  },
+                  "email": {
+                    "type": "string",
+                    "example": "john.doe@example.com"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "schema": {
+              "type": "integer"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Update a user by Id.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Users"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "User not found."
+          }
+        }
       }
     }
   },
@@ -273,6 +324,10 @@
           "created_at": {
             "type": "string",
             "example": "2021-04-30 17:06:24"
+          },
+          "updated_at": {
+            "type": "string",
+            "example": "2021-04-30 18:06:24"
           }
         }
       }
