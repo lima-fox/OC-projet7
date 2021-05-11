@@ -7,9 +7,9 @@ security:
                 class: App\Entity\Customer
                 property: name
     firewalls:
-        #dev:
-        #    pattern: ^/(_(profiler|wdt)|css|images|js)/
-        #    security: false
+        dev:
+            pattern: ^/(_(profiler|wdt)|css|images|js)/
+            security: false
         #main:
         #    anonymous: true
         #    lazy: true

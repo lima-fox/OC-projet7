@@ -19,6 +19,27 @@ class UsersRepository extends ServiceEntityRepository
         parent::__construct($registry, Users::class);
     }
 
+    /**
+     * @throws \Doctrine\ORM\NonUniqueResultException
+     * @throws \Doctrine\ORM\NoResultException
+     */
+    public function CountByEMail(string $email, string $client_id, int $idToExclude)
+    {
+        $qb = $this->_em->createQueryBuilder();
+
+        $query = $qb->select('count(u.id)')
+            ->from('App:Users', 'u')
+            ->where('u.email = :email')
+            ->andWhere('u.client_id = :client_id')
+            ->andWhere('u.id != :idToExclude')
+            ->setParameter('email', $email)
+            ->setParameter('client_id', $client_id)
+            ->setParameter('idToExclude', $idToExclude)
+            ->getQuery();
+
+            return $query->getSingleScalarResult();
+    }
+
     // /**
     //  * @return Users[] Returns an array of Users objects
     //  */
