@@ -4,11 +4,13 @@ namespace App\Entity;
 
 use App\Repository\UsersRepository;
 use Doctrine\ORM\Mapping as ORM;
+use JMS\Serializer\Annotation as Serializer;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Entity(repositoryClass=UsersRepository::class)
  *
+ * @Serializer\ExclusionPolicy("all")
  */
 class Users
 {
@@ -16,6 +18,8 @@ class Users
      * @ORM\Id
      * @ORM\GeneratedValue
      * @ORM\Column(type="integer")
+     *
+     * @Serializer\Expose()
      */
     private $id;
 
@@ -24,6 +28,8 @@ class Users
      *
      * @Assert\NotBlank
      * @Assert\Length(min=3)
+     *
+     * @Serializer\Expose()
      */
     private $name;
 
@@ -32,11 +38,15 @@ class Users
      *
      * @Assert\NotBlank
      * @Assert\Email()
+     *
+     * @Serializer\Expose()
      */
     private $email;
 
     /**
      * @ORM\Column(type="datetime")
+     *
+     * @Serializer\Expose()
      */
     private $created_at;
 
@@ -47,11 +57,15 @@ class Users
 
     /**
      * @ORM\Column(type="string", length=255)
+     *
      */
     private $client_id;
 
     /**
      * @ORM\Column(type="datetime", nullable=true)
+     * @ORM\ManyToOne(targetEntity="App\Entity\Customer", inversedBy="name")
+     *
+     * @Serializer\Expose()
      */
     private $updated_at;
 

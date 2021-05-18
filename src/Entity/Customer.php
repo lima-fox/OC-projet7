@@ -20,6 +20,7 @@ class Customer implements UserInterface
 
     /**
      * @ORM\Column(type="string", length=180, unique=true)
+     * @ORM\OneToMany(targetEntity="App\Entity\Users", mappedBy="client_id")
      */
     private $name;
 

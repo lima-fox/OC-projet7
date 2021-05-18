@@ -37,7 +37,7 @@ class UsersController extends AbstractFOSRestController
      */
     public function All(UsersRepository $usersRepository, Request $request)
     {
-        $limit = 10;
+        $limit = 3;
         $offset = $request->query->get('offset', 0);
 
         return $usersRepository->findBy(['client_id' => $this->getUser()->getName()], [], $limit, $offset);
