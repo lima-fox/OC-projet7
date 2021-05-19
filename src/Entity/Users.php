@@ -57,13 +57,13 @@ class Users
 
     /**
      * @ORM\Column(type="string", length=255)
+     * @ORM\ManyToOne(targetEntity="App\Entity\Customer", inversedBy="name")
      *
      */
     private $client_id;
 
     /**
      * @ORM\Column(type="datetime", nullable=true)
-     * @ORM\ManyToOne(targetEntity="App\Entity\Customer", inversedBy="name")
      *
      * @Serializer\Expose()
      */
