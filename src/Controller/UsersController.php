@@ -6,6 +6,7 @@ namespace App\Controller;
 
 use App\Entity\Users;
 use App\Errors\CustomAssert;
+use App\Errors\Error;
 use App\Repository\UsersRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use FOS\RestBundle\Controller\AbstractFOSRestController;
@@ -59,7 +60,7 @@ class UsersController extends AbstractFOSRestController
      *
      * @param UsersRepository $usersRepository
      * @param int $id
-     * @return Users[]|Response
+     * @return \FOS\RestBundle\View\View
      */
     public function One(UsersRepository $usersRepository, int $id)
     {
@@ -67,10 +68,11 @@ class UsersController extends AbstractFOSRestController
 
         if ($user == null)
         {
-            throw new HttpException(404, "User not found.");
+            $error = new Error('User not found', 404);
+            return $this->view($error, 404);
         }
 
-        return $user;
+        return $this->view($user);
     }
 
     /**
@@ -85,21 +87,22 @@ class UsersController extends AbstractFOSRestController
      * @param EntityManagerInterface $entityManager
      * @param UsersRepository $usersRepository
      * @param int $id
-     * @return Response
+     * @return \FOS\RestBundle\View\View
      */
-    public function Delete(EntityManagerInterface $entityManager, UsersRepository $usersRepository, int $id): Response
+    public function Delete(EntityManagerInterface $entityManager, UsersRepository $usersRepository, int $id): \FOS\RestBundle\View\View
     {
         $user = $usersRepository->findOneBy(['id' => $id, 'client_id'=> $this->getUser()->getName()]);
 
         if ($user == null)
         {
-            return New Response(null, Response::HTTP_NOT_FOUND);
+            $error = new Error('User not found', 404);
+            return $this->view($error, 404);
         }
 
         $entityManager->remove($user);
         $entityManager->flush();
 
-        return new Response(null, Response::HTTP_NO_CONTENT);
+        return $this->view(null, 204);
     }
 
     /**
@@ -171,7 +174,8 @@ class UsersController extends AbstractFOSRestController
 
         if ($user == null)
         {
-            return $this->view(null, Response::HTTP_NOT_FOUND);
+            $error = new Error('User not found', 404);
+            return $this->view($error, 404);
         }
 
         if (count($violations)) {

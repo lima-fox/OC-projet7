@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Errors\Error;
 use App\Repository\ProductsRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -29,7 +30,7 @@ class ProductsController extends AbstractController
      */
     public function All(ProductsRepository $productsRepository, Request $request)
     {
-        $limit = 10;
+        $limit = 3;
         $offset = $request->query->get('offset', 0);
 
         return $productsRepository->findBy([],[], $limit, $offset);
@@ -54,7 +55,8 @@ class ProductsController extends AbstractController
 
         if ($product == null)
         {
-            return New Response(null, 404);
+            $error = new Error('Product not found', 404);
+            return $this->view($error, 404);
         }
 
         return $product;
