@@ -6,11 +6,44 @@ use App\Repository\UsersRepository;
 use Doctrine\ORM\Mapping as ORM;
 use JMS\Serializer\Annotation as Serializer;
 use Symfony\Component\Validator\Constraints as Assert;
+use Hateoas\Configuration\Annotation as Hateoas;
 
 /**
  * @ORM\Entity(repositoryClass=UsersRepository::class)
  *
  * @Serializer\ExclusionPolicy("all")
+ *
+ * @Hateoas\Relation(
+ *      "self",
+ *      href = @Hateoas\Route(
+ *          "users_one",
+ *          parameters = { "id" = "expr(object.getId())" },
+ *          absolute = true
+ *      )
+ * )
+ * @Hateoas\Relation(
+ *      "update",
+ *      href = @Hateoas\Route(
+ *          "update_user",
+ *          parameters = { "id" = "expr(object.getId())" },
+ *          absolute = true
+ *      )
+ * )
+ * @Hateoas\Relation(
+ *      "delete",
+ *      href = @Hateoas\Route(
+ *          "delete_user",
+ *          parameters = { "id" = "expr(object.getId())" },
+ *          absolute = true
+ *      )
+ * )
+ * @Hateoas\Relation(
+ *      "all",
+ *      href = @Hateoas\Route(
+ *          "users_all",
+ *          absolute = true
+ *      )
+ * )
  */
 class Users
 {
@@ -21,7 +54,7 @@ class Users
      *
      * @Serializer\Expose()
      */
-    private $id;
+    private int $id;
 
     /**
      * @ORM\Column(type="string", length=255)
@@ -31,7 +64,7 @@ class Users
      *
      * @Serializer\Expose()
      */
-    private $name;
+    private string $name;
 
     /**
      * @ORM\Column(type="string", length=255)
@@ -41,7 +74,7 @@ class Users
      *
      * @Serializer\Expose()
      */
-    private $email;
+    private string $email;
 
     /**
      * @ORM\Column(type="datetime")
@@ -60,7 +93,7 @@ class Users
      * @ORM\ManyToOne(targetEntity="App\Entity\Customer", inversedBy="name")
      *
      */
-    private $client_id;
+    private string $client_id;
 
     /**
      * @ORM\Column(type="datetime", nullable=true)
