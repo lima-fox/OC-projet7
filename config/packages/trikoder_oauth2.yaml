@@ -9,5 +9,8 @@ trikoder_oauth2:
     resource_server:
         public_key: /home/vagrant/code/projet7api/public.key                       # Change this
 
-    persistence:
-        doctrine: null
+    persistence: # Required
+        doctrine:
+
+            # Name of the entity manager that you wish to use for managing clients and tokens.
+            entity_manager: default

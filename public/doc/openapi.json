@@ -115,7 +115,17 @@
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/Users"
+                "type": "object",
+                "properties": {
+                  "name": {
+                    "type": "string",
+                    "example": "John Doe"
+                  },
+                  "email": {
+                    "type": "string",
+                    "example": "john.doe@example.com"
+                  }
+                }
               }
             }
           }
@@ -129,6 +139,29 @@
                   "type": "array",
                   "items": {
                     "$ref": "#/components/schemas/Users"
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "bad request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "property_path": {
+                        "type": "string",
+                        "example": "email"
+                      },
+                      "message": {
+                        "type": "string",
+                        "example": "this email already exist"
+                      }
+                    }
                   }
                 }
               }
@@ -163,6 +196,84 @@
                 }
               }
             }
+          },
+          "404": {
+            "description": "user not found."
+          }
+        }
+      },
+      "delete": {
+        "summary": "Delete a user by Id.",
+        "tags": [
+          "Users"
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "schema": {
+              "type": "integer"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "delete a user by Id."
+          },
+          "404": {
+            "description": "User not found."
+          }
+        }
+      },
+      "put": {
+        "summary": "Update a user by Id.",
+        "tags": [
+          "Users"
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "name": {
+                    "type": "string",
+                    "example": "John Doe"
+                  },
+                  "email": {
+                    "type": "string",
+                    "example": "john.doe@example.com"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "schema": {
+              "type": "integer"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Update a user by Id.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Users"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "User not found."
           }
         }
       }
@@ -209,9 +320,34 @@
           "email": {
             "type": "string",
             "example": "john.doe@example.com"
+          },
+          "created_at": {
+            "type": "string",
+            "example": "2021-04-30 17:06:24"
+          },
+          "updated_at": {
+            "type": "string",
+            "example": "2021-04-30 18:06:24"
+          }
+        }
+      }
+    },
+    "securitySchemes": {
+      "oAuthNoScopes": {
+        "type": "oauth2",
+        "description": "This API uses OAuth 2 with the implicit grant flow.",
+        "flows": {
+          "clientCredentials": {
+            "tokenUrl": "http://projet7api.test/token",
+            "scopes": {}
           }
         }
       }
     }
-  }
+  },
+  "security": [
+    {
+      "oAuthNoScopes": []
+    }
+  ]
 }
