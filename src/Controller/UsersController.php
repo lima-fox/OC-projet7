@@ -6,9 +6,11 @@ namespace App\Controller;
 
 use App\Entity\Users;
 use App\Errors\CustomAssert;
+use App\Errors\Error;
 use App\Repository\UsersRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use FOS\RestBundle\Controller\AbstractFOSRestController;
+use FOS\RestBundle\Controller\Annotations as Rest;
 use FOS\RestBundle\Controller\Annotations\Delete;
 use FOS\RestBundle\Controller\Annotations\Put;
 use Symfony\Component\HttpFoundation\Request;
@@ -18,6 +20,7 @@ use FOS\RestBundle\Controller\Annotations\Post;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use FOS\RestBundle\Controller\Annotations\View;
 use Symfony\Component\Validator\ConstraintViolationList;
+use Symfony\Component\HttpKernel\Exception\HttpException;
 
 class UsersController extends AbstractFOSRestController
 {
@@ -53,10 +56,11 @@ class UsersController extends AbstractFOSRestController
      * @View(
      *     statusCode = 200
      *     )
+     * )
      *
      * @param UsersRepository $usersRepository
      * @param int $id
-     * @return Users[]|Response
+     * @return \FOS\RestBundle\View\View
      */
     public function One(UsersRepository $usersRepository, int $id)
     {
@@ -64,10 +68,11 @@ class UsersController extends AbstractFOSRestController
 
         if ($user == null)
         {
-            return New Response(null, Response::HTTP_NOT_FOUND);
+            $error = new Error('User not found', 404);
+            return $this->view($error, 404);
         }
 
-        return $user;
+        return $this->view($user);
     }
 
     /**
@@ -82,21 +87,22 @@ class UsersController extends AbstractFOSRestController
      * @param EntityManagerInterface $entityManager
      * @param UsersRepository $usersRepository
      * @param int $id
-     * @return Response
+     * @return \FOS\RestBundle\View\View
      */
-    public function Delete(EntityManagerInterface $entityManager, UsersRepository $usersRepository, int $id): Response
+    public function Delete(EntityManagerInterface $entityManager, UsersRepository $usersRepository, int $id): \FOS\RestBundle\View\View
     {
         $user = $usersRepository->findOneBy(['id' => $id, 'client_id'=> $this->getUser()->getName()]);
 
         if ($user == null)
         {
-            return New Response(null, Response::HTTP_NOT_FOUND);
+            $error = new Error('User not found', 404);
+            return $this->view($error, 404);
         }
 
         $entityManager->remove($user);
         $entityManager->flush();
 
-        return new Response(null, Response::HTTP_NO_CONTENT);
+        return $this->view(null, 204);
     }
 
     /**
@@ -113,6 +119,7 @@ class UsersController extends AbstractFOSRestController
      * @param ConstraintViolationList $violations
      * @param UsersRepository $usersRepository
      * @return Users|\FOS\RestBundle\View\View|Response
+     * @throws \Exception
      */
     public function Create(EntityManagerInterface $entityManager, Users $users, ConstraintViolationList $violations, UsersRepository $usersRepository)
     {
@@ -158,6 +165,8 @@ class UsersController extends AbstractFOSRestController
      * @param Users $users
      * @param ConstraintViolationList $violations
      * @return \FOS\RestBundle\View\View
+     * @throws \Doctrine\ORM\NoResultException
+     * @throws \Doctrine\ORM\NonUniqueResultException
      */
     public function Update(EntityManagerInterface $entityManager, UsersRepository $usersRepository, int $id, Users $users, ConstraintViolationList $violations) : \FOS\RestBundle\View\View
     {
@@ -165,7 +174,8 @@ class UsersController extends AbstractFOSRestController
 
         if ($user == null)
         {
-            return $this->view(null, Response::HTTP_NOT_FOUND);
+            $error = new Error('User not found', 404);
+            return $this->view($error, 404);
         }
 
         if (count($violations)) {
