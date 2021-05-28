@@ -13,4 +13,5 @@ return [
     Ajgarlag\Bundle\PsrHttpMessageBundle\AjgarlagPsrHttpMessageBundle::class => ['all' => true],
     Trikoder\Bundle\OAuth2Bundle\TrikoderOAuth2Bundle::class => ['all' => true],
     Symfony\Bundle\MonologBundle\MonologBundle::class => ['all' => true],
+    Bazinga\Bundle\HateoasBundle\BazingaHateoasBundle::class => ['all' => true],
 ];

@@ -4,9 +4,29 @@ namespace App\Entity;
 
 use App\Repository\ProductsRepository;
 use Doctrine\ORM\Mapping as ORM;
+use JMS\Serializer\Annotation as Serializer;
+use Hateoas\Configuration\Annotation as Hateoas;
 
 /**
  * @ORM\Entity(repositoryClass=ProductsRepository::class)
+ *
+ * @Serializer\ExclusionPolicy("all")
+ *
+ * @Hateoas\Relation(
+ *      "self",
+ *      href = @Hateoas\Route(
+ *          "products_one",
+ *          parameters = { "id" = "expr(object.getId())" },
+ *          absolute = true
+ *      )
+ * )
+ * @Hateoas\Relation(
+ *      "all",
+ *      href = @Hateoas\Route(
+ *          "products_all",
+ *          absolute = true
+ *      )
+ * )
  */
 class Products
 {
@@ -14,33 +34,45 @@ class Products
      * @ORM\Id
      * @ORM\GeneratedValue
      * @ORM\Column(type="integer")
+     *
+     * @Serializer\Expose()
      */
-    private $id;
+    private int $id;
 
     /**
      * @ORM\Column(type="string", length=255)
+     *
+     * @Serializer\Expose()
      */
-    private $brand;
+    private string $brand;
 
     /**
      * @ORM\Column(type="string", length=255)
+     *
+     * @Serializer\Expose()
      */
-    private $model;
+    private string $model;
 
     /**
      * @ORM\Column(type="integer")
+     *
+     * @Serializer\Expose()
      */
-    private $release_year;
+    private int $release_year;
 
     /**
      * @ORM\Column(type="string", length=255)
+     *
+     * @Serializer\Expose()
      */
-    private $operating_system;
+    private string $operating_system;
 
     /**
      * @ORM\Column(type="text")
+     *
+     * @Serializer\Expose()
      */
-    private $description;
+    private string $description;
 
     /**
      * @ORM\Column(type="datetime")

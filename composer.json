@@ -30,7 +30,8 @@
         "symfony/twig-bundle": "5.2.*",
         "symfony/validator": "5.2.*",
         "symfony/yaml": "5.2.*",
-        "trikoder/oauth2-bundle": "^3.2"
+        "trikoder/oauth2-bundle": "^3.2",
+        "willdurand/hateoas-bundle": "^2.2"
     },
     "config": {
         "optimize-autoloader": true,

@@ -12,7 +12,7 @@
   "paths": {
     "/products": {
       "get": {
-        "summary": "Returns a list of products with limit of 10 items.",
+        "summary": "Returns a list of products with limit of 3 items.",
         "tags": [
           "Products"
         ],
@@ -75,7 +75,7 @@
     },
     "/users": {
       "get": {
-        "summary": "Returns a list of users with limit of 10 items.",
+        "summary": "Returns a list of users with limit of 3 items.",
         "tags": [
           "Users"
         ],
@@ -137,6 +137,12 @@
               "application/json": {
                 "schema": {
                   "type": "array",
+                  "properties": {
+                    "id": {
+                      "type": "integer",
+                      "description": "Id of the created user."
+                    }
+                  },
                   "items": {
                     "$ref": "#/components/schemas/Users"
                   }
@@ -159,7 +165,7 @@
                       },
                       "message": {
                         "type": "string",
-                        "example": "this email already exist"
+                        "example": "this email already exist."
                       }
                     }
                   }
@@ -303,6 +309,29 @@
           "operating_system": {
             "type": "string",
             "example": "android"
+          },
+          "_links": {
+            "type": "object",
+            "properties": {
+              "self": {
+                "type": "object",
+                "properties": {
+                  "href": {
+                    "type": "string",
+                    "example": "http://projet7api.test/products/4"
+                  }
+                }
+              },
+              "all": {
+                "type": "object",
+                "properties": {
+                  "href": {
+                    "type": "string",
+                    "example": "http://projet7api.test/products"
+                  }
+                }
+              }
+            }
           }
         }
       },
@@ -328,6 +357,47 @@
           "updated_at": {
             "type": "string",
             "example": "2021-04-30 18:06:24"
+          },
+          "_links": {
+            "type": "object",
+            "properties": {
+              "self": {
+                "type": "object",
+                "properties": {
+                  "href": {
+                    "type": "string",
+                    "example": "http://projet7api.test/users/4"
+                  }
+                }
+              },
+              "update": {
+                "type": "object",
+                "properties": {
+                  "href": {
+                    "type": "string",
+                    "example": "http://projet7api.test/users/4"
+                  }
+                }
+              },
+              "delete": {
+                "type": "object",
+                "properties": {
+                  "href": {
+                    "type": "string",
+                    "example": "http://projet7api.test/users/4"
+                  }
+                }
+              },
+              "all": {
+                "type": "object",
+                "properties": {
+                  "href": {
+                    "type": "string",
+                    "example": "http://projet7api.test/users"
+                  }
+                }
+              }
+            }
           }
         }
       }
@@ -335,7 +405,7 @@
     "securitySchemes": {
       "oAuthNoScopes": {
         "type": "oauth2",
-        "description": "This API uses OAuth 2 with the implicit grant flow.",
+        "description": "This API uses OAuth 2 with the client credentials.",
         "flows": {
           "clientCredentials": {
             "tokenUrl": "http://projet7api.test/token",
