@@ -1,5 +1,7 @@
 # OC Projet 7 API
 
+[![Codacy Badge](https://api.codacy.com/project/badge/Grade/b3e4a18083c746c08cd0f99f07bbe3ed)](https://app.codacy.com/gh/lima-fox/OC-projet7?utm_source=github.com&utm_medium=referral&utm_content=lima-fox/OC-projet7&utm_campaign=Badge_Grade_Settings)
+
 ## Prerequisites
 - PHP 7.4
 
